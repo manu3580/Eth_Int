@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Clock - Digital & Analog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="glass-container">
+        <header>
+            <h2 id="date-display"></h2>
+            <div class="controls">
+                <button class="btn active" onclick="switchClock('digital')">Digital</button>
+                <button class="btn" onclick="switchClock('analog')">Analog</button>
+            </div>
+        </header>
+
+        <div id="digital" class="clock-view active">
+            <div class="digital-wrapper">
+                <span id="hour">00</span>:<span id="min">00</span>:<span id="sec">00</span>
+                <span id="ampm">AM</span>
+            </div>
+        </div>
+
+        <div id="analog" class="clock-view">
+            <div class="analog-clock">
+                <div class="dot"></div>
+                <div class="hand hour-hand" id="hour-hand"></div>
+                <div class="hand min-hand" id="min-hand"></div>
+                <div class="hand sec-hand" id="sec-hand"></div>
+                <span style="--i:1"><b>1</b></span>
+                <span style="--i:2"><b>2</b></span>
+                <span style="--i:3"><b>3</b></span>
+                <span style="--i:4"><b>4</b></span>
+                <span style="--i:5"><b>5</b></span>
+                <span style="--i:6"><b>6</b></span>
+                <span style="--i:7"><b>7</b></span>
+                <span style="--i:8"><b>8</b></span>
+                <span style="--i:9"><b>9</b></span>
+                <span style="--i:10"><b>10</b></span>
+                <span style="--i:11"><b>11</b></span>
+                <span style="--i:12"><b>12</b></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
