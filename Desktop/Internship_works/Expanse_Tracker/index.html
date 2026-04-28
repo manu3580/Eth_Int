@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flux | Expense Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <nav class="topbar" aria-label="Main navigation">
+                <div class="brand">
+                    <span class="brand-mark">F</span>
+                    <div>
+                        <h1>Flux</h1>
+                        <p>Expense command center</p>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme">Dark</button>
+            </nav>
+
+            <section class="hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Personal finance dashboard</p>
+                    <h2>Track spending, protect your budget, and see where money moves.</h2>
+                    <p class="hero-text">Add income and expenses, filter transactions, review category spending, and export your records whenever you need them.</p>
+                </div>
+                <div class="hero-panel">
+                    <span>This month</span>
+                    <strong id="hero-monthly-expense">$0.00</strong>
+                    <p id="hero-budget-status">Set a budget to start tracking progress.</p>
+                    <div class="progress-track" aria-hidden="true">
+                        <span id="budget-progress"></span>
+                    </div>
+                </div>
+            </section>
+        </header>
+
+        <section class="stats-grid" aria-label="Financial summary">
+            <article class="stat-card balance-card">
+                <span>Total balance</span>
+                <strong id="total-balance">$0.00</strong>
+                <p>Income minus expenses</p>
+            </article>
+            <article class="stat-card income-card">
+                <span>Total income</span>
+                <strong id="total-income">+$0.00</strong>
+                <p>Money added</p>
+            </article>
+            <article class="stat-card expense-card">
+                <span>Total expenses</span>
+                <strong id="total-expense">-$0.00</strong>
+                <p>Money spent</p>
+            </article>
+            <article class="stat-card savings-card">
+                <span>Savings rate</span>
+                <strong id="savings-rate">0%</strong>
+                <p>Balance vs income</p>
+            </article>
+        </section>
+
+        <section class="workspace">
+            <aside class="left-column">
+                <section class="panel">
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">Quick entry</span>
+                            <h3>New transaction</h3>
+                        </div>
+                    </div>
+
+                    <form id="transaction-form">
+                        <label class="field">
+                            <span>Title</span>
+                            <input type="text" id="title" maxlength="40" required placeholder="Groceries, salary, rent...">
+                        </label>
+
+                        <div class="field-row">
+                            <label class="field">
+                                <span>Amount</span>
+                                <input type="number" id="amount" min="0.01" step="0.01" required placeholder="0.00">
+                            </label>
+                            <label class="field">
+                                <span>Category</span>
+                                <select id="category">
+                                    <option value="Food">Food</option>
+                                    <option value="Travel">Travel</option>
+                                    <option value="Bills">Bills</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Study">Study</option>
+                                    <option value="Income">Income</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <label class="field">
+                            <span>Date</span>
+                            <input type="date" id="date" required>
+                        </label>
+
+                        <button type="submit" class="primary-btn">Add transaction</button>
+                    </form>
+                </section>
+
+                <section class="panel budget-panel">
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">Planner</span>
+                            <h3>Monthly budget</h3>
+                        </div>
+                    </div>
+                    <label class="field">
+                        <span>Budget limit</span>
+                        <input type="number" id="budget-input" min="0" step="100" placeholder="Enter monthly budget">
+                    </label>
+                    <button id="save-budget" class="secondary-btn" type="button">Save budget</button>
+                </section>
+
+                <section class="panel tips-panel">
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">Small habits</span>
+                            <h3>Money reminders</h3>
+                        </div>
+                    </div>
+                    <ul class="tips-list">
+                        <li>Review the biggest category every weekend.</li>
+                        <li>Record expenses on the same day you spend.</li>
+                        <li>Export a CSV before monthly planning.</li>
+                    </ul>
+                </section>
+            </aside>
+
+            <section class="right-column">
+                <section class="panel chart-panel">
+                    <div class="section-title split">
+                        <div>
+                            <span class="eyebrow">Insights</span>
+                            <h3>Category breakdown</h3>
+                        </div>
+                        <span id="top-category" class="pill">No expenses yet</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="panel history-panel">
+                    <div class="section-title split">
+                        <div>
+                            <span class="eyebrow">Records</span>
+                            <h3>Transaction history</h3>
+                        </div>
+                        <button id="export-csv" class="secondary-btn compact" type="button">Export CSV</button>
+                    </div>
+
+                    <div class="toolbar">
+                        <label class="search-box">
+                            <span>Search</span>
+                            <input type="text" id="search" placeholder="Search title...">
+                        </label>
+                        <label class="filter-box">
+                            <span>Filter</span>
+                            <select id="filter-category">
+                                <option value="all">All categories</option>
+                                <option value="Food">Food</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Health">Health</option>
+                                <option value="Study">Study</option>
+                                <option value="Income">Income</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <ul id="transaction-list" class="transaction-list"></ul>
+                    <div id="empty-state" class="empty-state">
+                        <strong>No transactions found</strong>
+                        <p>Add your first record or adjust the filters.</p>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
